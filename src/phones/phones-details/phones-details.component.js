@@ -1,6 +1,18 @@
 import {BaseComponent} from "../../shared/components/base/base.component.js";
 
 export class PhonesDetailsComponent extends BaseComponent {
+    constructor({element}, phone){
+        super({element});
+        this._phone = phone;
+        this._element.addEventListener('click', (event) =>{
+            let element = event.target.closest('.btn-back');
+            if(!element){
+                return;
+            }
+            document.location = document.referrer;
+        })
+    }
+
 
     show(phone){
         this._phone = phone;
@@ -9,37 +21,23 @@ export class PhonesDetailsComponent extends BaseComponent {
     }
 
     _render() {
+        let images = [];
+        this._phone.images.forEach((img) => images.push(`<li><img src=${img}></li>`));
+
         this._element.innerHTML = `
         
-    <img class="phone" src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
+    <img class="phone" src=${this._phone.images[0]}>
 
-    <button>Back</button>
+    <button class="btn-back">Back</button>
     <button>Add to basket</button>
+    <h1>${this._phone.name}</h1>
 
-
-    <h1>Motorola XOOM™ with Wi-Fi</h1>
-
-    <p>Motorola XOOM with Wi-Fi has a super-powerful dual-core processor and Android™ 3.0 (Honeycomb) — the Android platform designed specifically for tablets. With its 10.1-inch HD widescreen display, you’ll enjoy HD video in a thin, light, powerful and upgradeable tablet.</p>
+    <p>${this._phone.description}</p>
 
     <ul class="phone-thumbs">
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.1.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.2.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.3.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.4.jpg">
-      </li>
-      <li>
-        <img src="img/phones/motorola-xoom-with-wi-fi.5.jpg">
-      </li>
+    
+    ${images.join('')}
+    
     </ul>
         
         `
