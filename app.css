@@ -39,6 +39,11 @@ body {
   height: 115px;
   padding-top: 15px;
 }
+.basket-image {
+  width: 60px;
+  height: 50px;
+  float: left;
+}
 
 /** Detail View **/
 img.phone {

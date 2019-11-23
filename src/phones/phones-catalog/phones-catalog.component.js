@@ -14,6 +14,7 @@ export class PhonesCatalogComponent extends BaseComponent{
             const {phoneId} = element.dataset;
             this._onPhoneSelected(phoneId);
         })
+
     }
 
     _render() {
