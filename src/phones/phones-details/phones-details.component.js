@@ -1,46 +1,34 @@
 import {BaseComponent} from "../../shared/components/base/base.component.js";
 
 export class PhonesDetailsComponent extends BaseComponent {
-    constructor({element}, phone){
+    constructor({element}) {
         super({element});
-        this._phone = phone;
-        this._element.addEventListener('click', (event) =>{
-            let element = event.target.closest('.btn-back');
-            if(!element){
-                return;
-            }
-            document.location = document.referrer;
-        })
+        this
+            .on('click', '.phone-thumb', ({delegatedTarget: {src}}) => this._mainImage.src = src)
+            .on('click', '.back', (e) => this.emit('back'))
+            .on('click', '.add', (e) => this.emit('add-to-cart', this._phone.id))
     }
-
 
     show(phone){
         this._phone = phone;
         this._render();
+        this._mainImage = this._element.querySelector('img.phone');
+        [this._mainImage.src] = phone.images;
         super.show();
     }
 
     _render() {
-        let images = [];
-        this._phone.images.forEach((img) => images.push(`<li><img src=${img}></li>`));
 
         this._element.innerHTML = `
         
-    <img class="phone" src=${this._phone.images[0]}>
-
-    <button class="btn-back">Back</button>
-    <button>Add to basket</button>
+    <img class="phone">
+    <button class="back">Back</button>
+    <button class="add">Add to basket</button>
     <h1>${this._phone.name}</h1>
-
     <p>${this._phone.description}</p>
-
     <ul class="phone-thumbs">
-    
-    ${images.join('')}
-    
+    ${this._phone.images.map((imgSrc) => `<li><img class="phone-thumb" src=${imgSrc}></li>`).join('')}
     </ul>
-        
-        `
-
+    `
     }
 }
