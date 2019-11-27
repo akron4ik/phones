@@ -230,23 +230,39 @@ export const PhonesService = new class {
         console.log('init PhonesService');
     }
 
-    getAll() {
-        return mockedPhones;
+    getAll({searchText, orderBy} = {}) {
+        return new Promise((res, rej)=>{
+            setTimeout(()=>{
+                const searchPhones = this._search(mockedPhones, searchText);
+                const sorted = this._sort(searchPhones, orderBy);
+                res(sorted);
+
+            },1000)
+        });
     }
 
     getOneById(id){
         return mockedPhone;
     }
-    getByName(name){
-        let array = [];
-        if(!name){
-            return mockedPhones;
+    _search(phones, searchText){
+        if(!searchText){
+            return phones;
         }
-        for (let el of mockedPhones){
-            if(el.name.toLowerCase().includes(name.toLowerCase())){
-                array.push(el);
+        return phones.filter((phone)=> phone.name.toLowerCase().includes(searchText.toLowerCase()));
+    }
+    _sort(phones, orderBy){
+        if(!orderBy){
+            return phones;
+        }
+        phones.sort((phone1, phone2)=>{
+            if(phone1[orderBy] > phone2[orderBy]){
+                return 1;
             }
-        }
-        return array;
+            if(phone1[orderBy] < phone2[orderBy]){
+                return -1;
+            }
+            return 0;
+        })
+        return phones;
     }
 };

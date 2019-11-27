@@ -1,9 +1,9 @@
 import {BaseComponent} from "../../shared/components/base/base.component.js";
 
 export class PhonesCatalogComponent extends BaseComponent {
-    constructor({element, phones}) {
+    constructor({element}) {
         super({element});
-        this._phones = phones;
+        this._phones = [];
         this
             .on('click', '.thumb', (e) => {
                 const {phoneId} = e.delegatedTarget.dataset;
@@ -15,23 +15,17 @@ export class PhonesCatalogComponent extends BaseComponent {
         })
     }
 
-    _filterByName(arr, val){
-        if(val === 'age') {
-            arr.sort(((a, b) => a.age < b.age ? -1 : 1));
-            return
-        }
-        arr.sort(((a, b) => a.name < b.name ? -1 : 1));
-    }
 
     show(phones) {
-        this._render(phones);
+        this._phones = phones;
+        this._render();
         super.show();
     }
 
-    _render(phones) {
+    _render() {
         this._element.innerHTML = `
            <ul class="phones">
-           ${phones.map((phone) => {
+           ${this._phones.map((phone) => {
             return ` <li class="thumbnail">
                            <a href="#!/phones/${phone.id}" class="thumb" data-phone-id=${phone.id}>
                                <img alt=${phone.name} src=${phone.imageUrl}>

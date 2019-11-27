@@ -1,30 +1,20 @@
 import {BaseComponent} from "../../shared/components/base/base.component.js";
+import {PhonesService} from "../phones.service.js";
 
 export class FilterComponent extends BaseComponent{
     constructor({element}) {
         super({element});
         this._render();
-        this._filter();
         this
-            .on('keydown', '.search', (e) => {
-            if (e.keyCode !== 13) {
-                return;
-            }
-            console.log(e.delegatedTarget.value);
-            this.emit('search-phone', e.delegatedTarget.value)
-        });
-    }
+            .on('input', '.search', (e) => {
+            this.emit('search-phone', e.delegatedTarget.value)})
 
-    _filter(){
-        this.on('click', '.filter', (e) => {
-            this._filterName = e.delegatedTarget.value;
-            this.emit('filter-phones', this._filterName);
+            .on('change', '.sort', (e) => {
+            this.emit('filter-phones', e.delegatedTarget.value);
+
         })
-        return this._filterName;
+
     }
-
-
-
 
     _render(){
         this._element.innerHTML = `
@@ -36,7 +26,7 @@ export class FilterComponent extends BaseComponent{
           <p>
             Sort by:
            
-            <select class="filter">
+            <select class="sort">
               <option value="name">Alphabetical</option>
               <option value="age">Newest</option>
              </select>
