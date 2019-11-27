@@ -24,22 +24,24 @@ export class PhonesComponent extends BaseComponent {
     _initCatalog(){
         this._catalog = new PhonesCatalogComponent({
             element: this._element.querySelector('.phones-catalog'),
-            phones: PhonesService.getAll(),
+            phones: PhonesService.getAll()
         });
+        this._catalog.show(PhonesService.getAll());
         this._catalog
             .subscribe('phone-selected', ({detail: phoneId}) => {
-            const phone = PhonesService.getOneById(phoneId);
-            this._catalog.hide();
-            this._details.show(phone);
-        })
+              const phone = PhonesService.getOneById(phoneId);
+              this._catalog.hide();
+              this._details.show(phone);})
             .subscribe('add-to-cart', ({detail: phoneId}) => this._cart.add(phoneId));
 
-        this._filter.subscribe('filter-phones', ({detail: filterName})=>{
-            this._catalog._filterByName(this._catalog._phones, filterName);
-            this._catalog._render();
-        })
-
-
+        this._filter
+            .subscribe('filter-phones', ({detail: filterName})=>{
+              this._catalog._render(this._catalog.phones);
+              this._catalog._filterByName(this._catalog._phones, filterName);})
+            .subscribe('search-phone', ({detail: searchName})=>{
+              this._catalog.phones = PhonesService.getByName(searchName);
+              this._catalog._render(this._catalog.phones);
+            })
     }
 
     _initDetails(){
@@ -49,8 +51,7 @@ export class PhonesComponent extends BaseComponent {
         this._details
             .subscribe('back', ({detail: phoneId}) => {
               this._catalog.show();
-              this._details.hide();
-            })
+              this._details.hide();})
             .subscribe('add-to-cart', ({detail: phoneId}) => this._cart.add(phoneId))
     }
 
