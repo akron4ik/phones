@@ -1,10 +1,18 @@
 import {BaseComponent} from "../../shared/components/base/base.component.js";
 
 export class FilterComponent extends BaseComponent{
-    constructor({element}){
+    constructor({element}) {
         super({element});
         this._render();
         this._filter();
+        this
+            .on('keydown', '.search', (e) => {
+            if (e.keyCode !== 13) {
+                return;
+            }
+            console.log(e.delegatedTarget.value);
+            this.emit('search-phone', e.delegatedTarget.value)
+        });
     }
 
     _filter(){
@@ -14,6 +22,8 @@ export class FilterComponent extends BaseComponent{
         })
         return this._filterName;
     }
+
+
 
 
     _render(){

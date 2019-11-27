@@ -237,4 +237,16 @@ export const PhonesService = new class {
     getOneById(id){
         return mockedPhone;
     }
+    getByName(name){
+        let array = [];
+        if(!name){
+            return mockedPhones;
+        }
+        for (let el of mockedPhones){
+            if(el.name.toLowerCase().includes(name.toLowerCase())){
+                array.push(el);
+            }
+        }
+        return array;
+    }
 };
