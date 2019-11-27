@@ -16,6 +16,14 @@ export class PhonesCatalogComponent extends BaseComponent {
         })
     }
 
+    _filterByName(arr, val){
+        if(val === 'age') {
+            arr.sort(((a, b) => a.age < b.age ? -1 : 1));
+            return
+        }
+        arr.sort(((a, b) => a.name < b.name ? -1 : 1));
+    }
+
     _render() {
         this._element.innerHTML = `
            <ul class="phones">
