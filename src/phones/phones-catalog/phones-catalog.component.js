@@ -4,7 +4,6 @@ export class PhonesCatalogComponent extends BaseComponent {
     constructor({element, phones}) {
         super({element});
         this._phones = phones;
-        this._render();
         this
             .on('click', '.thumb', (e) => {
                 const {phoneId} = e.delegatedTarget.dataset;
@@ -16,10 +15,23 @@ export class PhonesCatalogComponent extends BaseComponent {
         })
     }
 
-    _render() {
+    _filterByName(arr, val){
+        if(val === 'age') {
+            arr.sort(((a, b) => a.age < b.age ? -1 : 1));
+            return
+        }
+        arr.sort(((a, b) => a.name < b.name ? -1 : 1));
+    }
+
+    show(phones) {
+        this._render(phones);
+        super.show();
+    }
+
+    _render(phones) {
         this._element.innerHTML = `
            <ul class="phones">
-           ${this._phones.map((phone) => {
+           ${phones.map((phone) => {
             return ` <li class="thumbnail">
                            <a href="#!/phones/${phone.id}" class="thumb" data-phone-id=${phone.id}>
                                <img alt=${phone.name} src=${phone.imageUrl}>
