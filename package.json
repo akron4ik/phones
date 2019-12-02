@@ -1,0 +1,23 @@
+{
+  "name": "phones",
+  "version": "1.0.0",
+  "description": "Static pages of phone catalogue",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akron4ik/phones.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akron4ik/phones/issues"
+  },
+  "homepage": "https://github.com/akron4ik/phones#readme",
+  "devDependencies": {
+    "node-static": "^0.7.11"
+  }
+}

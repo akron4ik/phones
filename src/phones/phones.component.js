@@ -15,30 +15,21 @@ export class PhonesComponent extends BaseComponent {
         this._initFilter();
     }
 
-    _initFilter(){
-        this._filter = new FilterComponent({
-            element: this._element.querySelector('.phones-filter'),
-        });
-        this._filter.subscribe('search-phone', ({detail: searchText}) => {
-            this.searchText = searchText;
-            this._showFilteredPhones();
-        });
-        this._filter.subscribe('filter-phones', ({detail: orderBy}) => {
-            this.orderBy = orderBy;
-            this._showFilteredPhones();
-        })
-    }
-
     _initCatalog(){
         this._catalog = new PhonesCatalogComponent({
             element: this._element.querySelector('.phones-catalog'),
         });
         this._showFilteredPhones();
         this._catalog
-            .subscribe('phone-selected', ({detail: phoneId}) => {
-              const phone = PhonesService.getOneById(phoneId);
-              this._catalog.hide();
-              this._details.show(phone);})
+            .subscribe('phone-selected', async ({detail: phoneId}) => {
+             try {
+                const phone = await PhonesService.getOneById(phoneId);
+                  this._catalog.hide();
+                  this._details.show(phone)
+              }catch(err){
+                  console.log(err);
+              }
+              })
             .subscribe('add-to-cart', ({detail: phoneId}) => this._cart.add(phoneId));
     }
 
@@ -59,9 +50,28 @@ export class PhonesComponent extends BaseComponent {
         })
     }
 
+    _initFilter(){
+        this._filter = new FilterComponent({
+            element: this._element.querySelector('.phones-filter'),
+        });
+        this._filter.subscribe('search-phone', ({detail: searchText}) => {
+            this.searchText = searchText;
+            this._showFilteredPhones();
+        });
+        this._filter.subscribe('filter-phones', ({detail: orderBy}) => {
+            this.orderBy = orderBy;
+            this._showFilteredPhones();
+        })
+    }
+
     async _showFilteredPhones(){
-        const phones = await PhonesService.getAll({searchText: this.searchText, orderBy: this.orderBy});
-        this._catalog.show(phones);
+        try {
+            const phones = await PhonesService.getAll({searchText: this.searchText, orderBy: this.orderBy});
+            this._catalog.show(phones);
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
 
     _render() {
